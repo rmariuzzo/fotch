@@ -1,0 +1,29 @@
+{
+  "name": "fotch",
+  "version": "0.0.0",
+  "description": "Fotch – In browser fake REST API for creative development purposes!",
+  "main": "lib/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.3.3"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmariuzzo/fotch.git"
+  },
+  "keywords": [
+    "fetch",
+    "rest",
+    "fake",
+    "devtool"
+  ],
+  "author": "Rubens Mariuzzo <rubens@mariuzzo.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rmariuzzo/fotch/issues"
+  },
+  "homepage": "https://github.com/rmariuzzo/fotch#readme"
+}

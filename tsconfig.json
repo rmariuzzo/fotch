@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",
+    "module": "es2015",
+    "target": "es5",
+    "declaration": true,
+    "lib": [
+      "dom",
+      "es6"
+    ]
+  },
+  "include": ["./src/**/*"]
+}
