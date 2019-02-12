@@ -7,11 +7,14 @@
   "devDependencies": {
     "@types/jest": "^24.0.1",
     "jest": "^24.1.0",
+    "np": "^4.0.2",
     "ts-jest": "^23.10.5",
     "typescript": "^3.3.3"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "release": "np",
+    "release:beta": "np --tag=beta --any-branch"
   },
   "repository": {
     "type": "git",
