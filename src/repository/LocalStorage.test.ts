@@ -14,10 +14,10 @@ describe('LocalStorage', () => {
 
   it('should error on invalid get', () => {
     const ls = new LocalStorage()
-    expect(() => ls.get(null, null)).toThrow()
-    expect(() => ls.get(undefined, undefined)).toThrow()
-    expect(() => ls.get('apples', null)).toThrow()
-    expect(() => ls.get('apples', 1)).toThrow()
+    expect(() => ls.get(null, null)).toThrow('not found')
+    expect(() => ls.get(undefined, undefined)).toThrow('not found')
+    expect(() => ls.get('apples', null)).toThrow('not found')
+    expect(() => ls.get('apples', 1)).toThrow('not found')
   })
 
   it('should create item on create', () => {
@@ -66,7 +66,7 @@ describe('LocalStorage', () => {
 
       ls.remove('apples', created.id)
 
-      expect(() => ls.get('apples', created.id)).toThrow()
+      expect(() => ls.get('apples', created.id)).toThrow('not found')
     }).not.toThrow()
   })
 })

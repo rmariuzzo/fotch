@@ -1,5 +1,5 @@
 import { Repository, Id } from './Repository'
-import { RepositoryError } from '../error/index'
+import { NotFoundError } from '../error'
 
 type Store = {
   data: Array<any>
@@ -31,13 +31,13 @@ export default class LocalStorage implements Repository<Object> {
     const collection = read(name)
 
     if (!collection) {
-      throw new RepositoryError.NotFound(`${name} with id ${id} not found`)
+      throw new NotFoundError(`${name} with id ${id} not found`)
     }
 
     const record = collection.data.find(datum => datum.id === id)
 
     if (!record) {
-      throw new RepositoryError.NotFound(`${name} with id ${id} not found`)
+      throw new NotFoundError(`${name} with id ${id} not found`)
     }
 
     return record

@@ -1,1 +1,1 @@
-export { default as RepositoryError } from './RepositoryError'
+export { default as NotFoundError } from './NotFoundError'

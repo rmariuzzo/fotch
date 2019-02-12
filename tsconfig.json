@@ -4,10 +4,8 @@
     "module": "es2015",
     "target": "es5",
     "declaration": true,
-    "lib": [
-      "dom",
-      "es6"
-    ]
+    "lib": ["dom", "es6"],
+    "moduleResolution": "node"
   },
   "include": ["./src/**/*"]
 }
