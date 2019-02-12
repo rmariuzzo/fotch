@@ -1,4 +1,4 @@
-import { Repository } from "../types"
+import Repository from "./Repository"
 
 type Store = {
   data: Array<any>,
