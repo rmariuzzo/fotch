@@ -64,3 +64,5 @@ cjs
 esm
 umd
 lib
+
+.size-snapshot.json
