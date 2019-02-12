@@ -22,5 +22,10 @@ fotch('/api')
  2. Install dependencies: `npm i`
  3. Create a PR.
 
+## Test
+```bash
+npm test
+```
+
 ## Releases
 We use `np` for releases.
