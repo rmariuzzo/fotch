@@ -1,7 +1,6 @@
 import LocalStorage from './LocalStorage'
 
 describe('LocalStorage', () => {
-
   beforeEach(() => {
     localStorage.clear()
   })
@@ -22,7 +21,6 @@ describe('LocalStorage', () => {
   })
 
   it('should create item on create', () => {
-
     expect(() => {
       const ls = new LocalStorage()
       const data = { color: 'red' }
@@ -42,14 +40,14 @@ describe('LocalStorage', () => {
       const ls = new LocalStorage()
       const data = { color: 'red' }
       const created = ls.create('apples', data)
-      
+
       expect(created).toHaveProperty('id')
       expect(created).toMatchObject(data)
-      
+
       const apple = ls.get('apples', created.id)
 
       expect(apple).toMatchObject(data)
-      
+
       const patch = { color: 'green' }
       const updated = ls.update('apples', apple.id, patch)
 
@@ -65,7 +63,7 @@ describe('LocalStorage', () => {
       const created = ls.create('apples', data)
 
       expect(() => ls.get('apples', created.id)).not.toThrow()
-      
+
       ls.remove('apples', created.id)
 
       expect(() => ls.get('apples', created.id)).toThrow()

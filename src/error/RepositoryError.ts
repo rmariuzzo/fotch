@@ -4,7 +4,7 @@ export default class RepositoryError extends Error {
       super(message, 404)
     }
   }
-  
+
   status: number
 
   constructor(message: string, status: number) {

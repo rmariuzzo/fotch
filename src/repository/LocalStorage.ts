@@ -1,17 +1,17 @@
-import { Repository, Id } from "./Repository"
-import { RepositoryError } from "../error/index";
+import { Repository, Id } from './Repository'
+import { RepositoryError } from '../error/index'
 
 type Store = {
-  data: Array<any>,
-  meta: any,
+  data: Array<any>
+  meta: any
 }
 
-function read(key: string) : Store | null {
+function read(key: string): Store | null {
   const source = localStorage.getItem(key)
   return JSON.parse(source)
 }
 
-function write(key: string, store: Store) : void {
+function write(key: string, store: Store): void {
   localStorage.setItem(key, JSON.stringify(store))
 }
 
@@ -58,7 +58,7 @@ export default class LocalStorage implements Repository<Object> {
   update(name: string, id: Id, data: any): any {
     const store = read(name)
     const item = store.data.find(datum => datum.id === id)
-    
+
     Object.assign(item, data)
 
     write(name, store)
@@ -72,7 +72,7 @@ export default class LocalStorage implements Repository<Object> {
     const index = store.data.indexOf(item)
 
     store.data.splice(index, 1)
-    
+
     write(name, store)
   }
 }
