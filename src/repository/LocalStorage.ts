@@ -5,10 +5,9 @@ type Store = {
   meta: any,
 }
 
-function read(key: string) : Store {
+function read(key: string) : Store | null {
   const source = localStorage.getItem(key)
-  const parsed = JSON.parse(source)
-  return parsed ? parsed : { data: [], meta: [] }
+  return JSON.parse(source)
 }
 
 function write(key: string, store: Store) : void {
