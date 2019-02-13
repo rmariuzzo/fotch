@@ -25,7 +25,7 @@ export default function fotch(match: string = ''): void {
     let method = init && init.method && init.method.toLowerCase()
     method = method || 'get'
 
-    if (!['get', 'post', 'put', 'patch', 'deleted'].includes(method)) {
+    if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
       return fetch(input, init)
     }
 

@@ -57,7 +57,16 @@ export default class LocalStorage implements Repository<Object> {
 
   update(name: string, id: Id, data: any): any {
     const store = read(name)
+
+    if (!store) {
+      throw new NotFoundError(`${name} with id ${id} not found`)
+    }
+
     const item = store.data.find(datum => datum.id === id)
+
+    if (item === undefined) {
+      throw new NotFoundError(`${name} with id ${id} not found`)
+    }
 
     Object.assign(item, data)
 
@@ -68,7 +77,17 @@ export default class LocalStorage implements Repository<Object> {
 
   remove(name: string, id: Id): void {
     const store = read(name)
+
+    if (!store) {
+      throw new NotFoundError(`${name} with id ${id} not found`)
+    }
+
     const item = store.data.find(datum => datum.id === id)
+
+    if (item === undefined) {
+      throw new NotFoundError(`${name} with id ${id} not found`)
+    }
+
     const index = store.data.indexOf(item)
 
     store.data.splice(index, 1)
