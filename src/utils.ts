@@ -1,45 +1,28 @@
+const notImplemented = () => {
+  throw new Error('not implemented')
+}
+
 export function createResponse(
   data: any,
   status: number,
   url: string
 ): Response {
   return {
-    body: new ReadableStream({
-      start(controller) {
-        controller.enqueue(new TextEncoder().encode(JSON.stringify(data)))
-        controller.close()
-      }
-    }),
+    body: null,
     bodyUsed: false,
-    headers: new Headers(),
+    headers: null,
     ok: status >= 200 && status < 300,
     redirected: false,
     status,
     statusText: '',
     type: 'basic',
     url: `fotch:///${url}`,
-    trailer: Promise.resolve(new Headers()),
-    json() {
-      try {
-        return Promise.resolve(JSON.parse(data))
-      } catch (error) {
-        return Promise.reject(error)
-      }
-    },
-    clone() {
-      throw new Error('not implemented')
-    },
-    arrayBuffer() {
-      throw new Error('not implemented')
-    },
-    blob() {
-      throw new Error('not implemented')
-    },
-    formData() {
-      throw new Error('not implemented')
-    },
-    text() {
-      throw new Error('not implemented')
-    }
+    trailer: null,
+    json: () => Promise.resolve(data),
+    clone: notImplemented,
+    arrayBuffer: notImplemented,
+    blob: notImplemented,
+    formData: notImplemented,
+    text: notImplemented
   }
 }

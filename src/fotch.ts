@@ -3,7 +3,7 @@ import { createResponse } from './utils'
 
 const repository = new LocalStorage()
 
-export default function fotch(match: string): void {
+export default function fotch(match: string = ''): void {
   const fetch = self.fetch
 
   self.fetch = (input: RequestInfo, init?: RequestInit): Promise<Response> => {
@@ -15,12 +15,19 @@ export default function fotch(match: string): void {
       return fetch(input, init)
     }
 
-    const segments = input.toString().split(/\//)
+    const segments = input
+      .toString()
+      .replace(/(^\/|\/$)/g, '')
+      .split(/\//)
     const id = segments.length > 1 ? segments.pop() : null
     const name = segments.join('/')
 
     let method = init && init.method && init.method.toLowerCase()
     method = method || 'get'
+
+    if (!['get', 'post', 'put', 'patch', 'deleted'].includes(method)) {
+      return fetch(input, init)
+    }
 
     let data
 
@@ -52,7 +59,9 @@ export default function fotch(match: string): void {
           return Promise.resolve(createResponse(data, 200, input.toString()))
       }
     } catch (error) {
-      return Promise.reject(createResponse(data, 500, input.toString()))
+      return Promise.reject(
+        createResponse(data, error.status || 500, input.toString())
+      )
     }
   }
 }
