@@ -1,6 +1,6 @@
 {
   "name": "fotch",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "description": "Fotch – In browser fake REST API for creative development purposes!",
   "main": "lib/index.js",
   "dependencies": {},
