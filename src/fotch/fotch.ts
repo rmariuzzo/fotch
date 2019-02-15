@@ -1,18 +1,35 @@
-import LocalStorage from './repository/LocalStorage'
-import { createResponse } from './utils'
+import LocalStorage from '../repository/LocalStorage'
+import { createResponse } from '../utils'
 
 const repository = new LocalStorage()
+let _fetch = null
+let intercepting = false
 
-export default function fotch(match: string = ''): void {
-  const fetch = self.fetch
+export default {
+  start(match?: string) {
+    if (!intercepting) {
+      _fetch = window.fetch
+      intercepting = true
+      window.fetch = fotch(match)
+    }
+  },
 
-  self.fetch = (input: RequestInfo, init?: RequestInit): Promise<Response> => {
+  stop() {
+    if (intercepting) {
+      intercepting = false
+      window.fetch = _fetch
+    }
+  }
+}
+
+const fotch = (match?: string) => {
+  return (input: RequestInfo, init?: RequestInit): Promise<Response> => {
     if (!input) {
-      return fetch(input)
+      return _fetch(input)
     }
 
-    if (!input.toString().includes(match)) {
-      return fetch(input, init)
+    if (typeof match === 'string' && !input.toString().includes(match)) {
+      return _fetch(input, init)
     }
 
     const segments = input
@@ -26,7 +43,7 @@ export default function fotch(match: string = ''): void {
     method = method || 'get'
 
     if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) {
-      return fetch(input, init)
+      return _fetch(input, init)
     }
 
     let data

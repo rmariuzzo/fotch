@@ -8,13 +8,19 @@ describe('fotch', () => {
     self.localStorage.clear()
   })
 
+  afterEach(() => {
+    fotch.stop()
+  })
+
   it('should replace the fetch object', () => {
     const fetch = self.fetch
-    fotch()
+    fotch.start()
     expect(fetch).not.toBe(self.fetch)
   })
 
   it('should get a collection', async () => {
+    fotch.start()
+
     expect((await fetch('/apples')).json()).resolves.toEqual([])
     expect((await fetch('apples')).json()).resolves.toEqual([])
     expect((await fetch('apples/')).json()).resolves.toEqual([])
@@ -22,12 +28,17 @@ describe('fotch', () => {
   })
 
   it('should get an item', async () => {
+    fotch.start()
+
     const apple = ls.create('apples', { color: 'red' })
     const response = await fetch(`/apples/${apple.id}`)
+
     expect(response.json()).resolves.toMatchObject(apple)
   })
 
   it('should get not found', async () => {
+    fotch.start()
+
     try {
       await fetch('/apples/1')
       fail()
@@ -37,6 +48,8 @@ describe('fotch', () => {
   })
 
   it('should post an item', async () => {
+    fotch.start()
+
     const apple = { color: 'red' }
     const response = await fetch('/apples', {
       method: 'POST',
@@ -47,8 +60,9 @@ describe('fotch', () => {
   })
 
   it('should update an item', async () => {
-    const apple = ls.create('apples', { color: 'red' })
+    fotch.start()
 
+    const apple = ls.create('apples', { color: 'red' })
     const patch = { color: 'green' }
     const response = await fetch(`/apples/${apple.id}`, {
       method: 'PUT',
@@ -59,6 +73,8 @@ describe('fotch', () => {
   })
 
   it('should not update an item when not found', async () => {
+    fotch.start()
+
     try {
       await fetch(`/apples/1`, {
         method: 'PUT',
@@ -71,6 +87,8 @@ describe('fotch', () => {
   })
 
   it('should remove an item', async () => {
+    fotch.start()
+
     const apple = ls.create('apples', { color: 'red' })
     const response = await fetch(`/apples/${apple.id}`, { method: 'DELETE' })
 
@@ -85,11 +103,37 @@ describe('fotch', () => {
   })
 
   it('should not remove an item when not found', async () => {
+    fotch.start()
+
     try {
       await fetch('/apples/1', { method: 'DELETE' })
       fail()
     } catch (error) {
       expect(error).toMatchObject({ status: 404 })
     }
+  })
+
+  it('should intercept specific calls', () => {
+    const fetchSpy = (window.fetch = jest.fn())
+
+    try {
+      fetch('/apples')
+    } catch (error) {}
+
+    expect(fetchSpy.mock.calls.length).toBe(1)
+
+    fotch.start('/api')
+
+    try {
+      fetch('/apples')
+    } catch (error) {}
+
+    expect(fetchSpy.mock.calls.length).toBe(2)
+
+    try {
+      fetch('/api/apples')
+    } catch (error) {}
+
+    expect(fetchSpy.mock.calls.length).toBe(2)
   })
 })

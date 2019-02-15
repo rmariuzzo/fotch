@@ -4,7 +4,7 @@
 #### Motivation
 
 <small>
-When I code for fun, I need to have backend REST API to play with. Usually, I feel too lazy to create a dump REST API. That's where I have dream about a simple library that I could plug in the frontend with little effort and simulate and persist data somewhere.
+When I code for fun, I need to have backend REST API to play with. Usually, I feel too lazy to create a dumb REST API. I have dream about a simple library that I could plug in the frontend with little effort and simulate and persist data somewhere. Then <code>fotch</code> was born.
 </small>
 
 #### How it works?
@@ -26,10 +26,10 @@ npm i fotch
 ```js
 import fotch from 'fotch'
 
-fotch()
+fotch.start()
 ```
 
-That's it! Seriously, just start using the `fetch` API as if there's a REST API.
+That's it! Seriously, just start using the `fetch` API as if there's a REST API. You can stop intercepting calls using `fotch.stop()`.
 
 ## Examples
 
@@ -56,10 +56,10 @@ There's only one option that will allow to filter certain calls:
 
 ```js
 // Filter any call where its URL contains “/api/”.
-fotch('/api/')
+fotch.start('/api/')
 ```
 
-If you need more options then **[request it creating an issue](/issue/new)**.
+If you need more options then **[request it creating an issue](/issues/new)**.
 
 <br>
 
