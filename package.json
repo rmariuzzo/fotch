@@ -2,7 +2,14 @@
   "name": "fotch",
   "version": "1.0.1",
   "description": "Fotch – In browser fake REST API for creative development purposes!",
+  "files": [
+    "lib",
+    "cjs",
+    "esm",
+    "umd"
+  ],
   "main": "lib/index.js",
+  "module": "esm/lang.js",
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.3",
@@ -11,6 +18,7 @@
     "np": "^4.0.2",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
+    "rimraf": "^2.6.3",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -25,7 +33,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "rollup -c",
+    "build": "rimraf cjs esm lib umd && tsc && rollup -c",
     "release": "np",
     "release:beta": "np --tag=beta --any-branch",
     "prerelease": "npm run build",
