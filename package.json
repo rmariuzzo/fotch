@@ -28,6 +28,8 @@
     "build": "rollup -c",
     "release": "np",
     "release:beta": "np --tag=beta --any-branch",
+    "prerelease": "npm run build",
+    "prerelease:beta": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
