@@ -13,6 +13,9 @@ When I code for fun, I need to have backend REST API to play with. Usually, I fe
 <code>fotch</code> monkey patch <code>window.api</code> and intercept all calls. When a matching call looks like a REST operation then <code>fotch</code> responde as you would expect. All data is stored in <code>window.localStorage</code>.
 </small>
 
+<br>
+<br>
+
 # Installation
 
 ```bash
@@ -30,6 +33,10 @@ fotch.start()
 ```
 
 That's it! Seriously, just start using the `fetch` API as if there's a REST API. You can stop intercepting calls using `fotch.stop()`.
+
+| **[▶︎ View demo on CodeSandbox](https://codesandbox.io/s/rwqo347pjo?autoresize=1&hidenavigation=1&view=preview)** |
+| ----------------------------------------------------------------------------------------------------------------- |
+
 
 ## Examples
 
