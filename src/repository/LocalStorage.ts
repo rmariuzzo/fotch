@@ -3,16 +3,19 @@ import { NotFoundError } from '../error'
 
 type Store = {
   data: Array<any>
-  meta: any
+  meta: {
+    version: number
+    lastId: string
+  }
 }
 
 function read(key: string): Store | null {
-  const source = localStorage.getItem(key)
+  const source = localStorage.getItem(`__fotch_${key}`)
   return JSON.parse(source)
 }
 
 function write(key: string, store: Store): void {
-  localStorage.setItem(key, JSON.stringify(store))
+  localStorage.setItem(`__fotch_${key}`, JSON.stringify(store))
 }
 
 export default class LocalStorage implements Repository<Object> {
@@ -44,10 +47,9 @@ export default class LocalStorage implements Repository<Object> {
   }
 
   create(name: string, data: any): any {
-    const store = read(name) || { data: [], meta: [] }
-    const lastItem = store.data[store.data.length - 1] || { id: 0 }
+    const store = read(name) || { data: [], meta: { version: 1, lastId: '0' } }
 
-    data.id = `${Number(lastItem.id) + 1}`
+    store.meta.lastId = data.id = `${Number(store.meta.lastId) + 1}`
     store.data.push(data)
 
     write(name, store)
