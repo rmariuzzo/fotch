@@ -2,7 +2,7 @@ import LocalStorage from '../repository/LocalStorage'
 import { createResponse } from '../utils'
 
 const repository = new LocalStorage()
-let _fetch = null
+let _fetch = window.fetch
 let intercepting = false
 
 export default {
@@ -19,11 +19,11 @@ export default {
       intercepting = false
       window.fetch = _fetch
     }
-  }
+  },
 }
 
 const fotch = (match?: string) => {
-  return (input: RequestInfo, init?: RequestInit): Promise<Response> => {
+  return async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
     if (!input) {
       return _fetch(input)
     }
@@ -51,29 +51,46 @@ const fotch = (match?: string) => {
     try {
       switch (method) {
         case 'get':
-          if (id === null) {
-            data = repository.all(name)
-          } else {
+          if (id) {
             data = repository.get(name, id)
+          } else {
+            data = repository.all(name)
           }
 
           return Promise.resolve(createResponse(data, 200, input.toString()))
 
         case 'post':
-          data = repository.create(name, JSON.parse(init.body.toString()))
+          data = repository.create(
+            name,
+            JSON.parse(init?.body?.toString() ?? '{}')
+          )
 
           return Promise.resolve(createResponse(data, 201, input.toString()))
 
         case 'put':
         case 'patch':
-          data = repository.update(name, id, JSON.parse(init.body.toString()))
+          if (!id) {
+            throw new Error(`Missing id: ${id}`)
+          }
+
+          data = repository.update(
+            name,
+            id,
+            JSON.parse(init?.body?.toString() ?? '{}')
+          )
 
           return Promise.resolve(createResponse(data, 200, input.toString()))
 
         case 'delete':
+          if (!id) {
+            throw new Error(`Missing id: ${id}`)
+          }
+
           repository.remove(name, id)
 
           return Promise.resolve(createResponse(data, 200, input.toString()))
+        default:
+          throw new Error(`Unexpected method: ${method}`)
       }
     } catch (error) {
       return Promise.reject(

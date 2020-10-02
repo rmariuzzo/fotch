@@ -7,16 +7,11 @@ describe('LocalStorage', () => {
 
   it('should return array on all', () => {
     const ls = new LocalStorage()
-    expect(ls.all(null)).toHaveLength(0)
-    expect(ls.all(undefined)).toHaveLength(0)
     expect(ls.all('apples')).toHaveLength(0)
   })
 
   it('should error on invalid get', () => {
     const ls = new LocalStorage()
-    expect(() => ls.get(null, null)).toThrow('not found')
-    expect(() => ls.get(undefined, undefined)).toThrow('not found')
-    expect(() => ls.get('apples', null)).toThrow('not found')
     expect(() => ls.get('apples', 1)).toThrow('not found')
   })
 

@@ -10,19 +10,19 @@ export function createResponse(
   return {
     body: null,
     bodyUsed: false,
-    headers: null,
+    headers: {} as any,
     ok: status >= 200 && status < 300,
     redirected: false,
     status,
     statusText: '',
     type: 'basic',
     url: `fotch:///${url}`,
-    trailer: null,
+    trailer: Promise.resolve({} as any),
     json: () => Promise.resolve(data),
     clone: notImplemented,
     arrayBuffer: notImplemented,
     blob: notImplemented,
     formData: notImplemented,
-    text: notImplemented
+    text: notImplemented,
   }
 }

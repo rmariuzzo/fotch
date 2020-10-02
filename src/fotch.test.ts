@@ -53,7 +53,7 @@ describe('fotch', () => {
     const apple = { color: 'red' }
     const response = await fetch('/apples', {
       method: 'POST',
-      body: JSON.stringify(apple)
+      body: JSON.stringify(apple),
     })
 
     expect(response.json()).resolves.toMatchObject(apple)
@@ -66,7 +66,7 @@ describe('fotch', () => {
     const patch = { color: 'green' }
     const response = await fetch(`/apples/${apple.id}`, {
       method: 'PUT',
-      body: JSON.stringify(patch)
+      body: JSON.stringify(patch),
     })
 
     expect(response.json()).resolves.toMatchObject(patch)
@@ -78,7 +78,7 @@ describe('fotch', () => {
     try {
       await fetch(`/apples/1`, {
         method: 'PUT',
-        body: JSON.stringify({ color: 'green' })
+        body: JSON.stringify({ color: 'green' }),
       })
       fail()
     } catch (error) {
@@ -113,11 +113,11 @@ describe('fotch', () => {
     }
   })
 
-  it('should intercept specific calls', () => {
+  it('should intercept specific calls', async () => {
     const fetchSpy = (window.fetch = jest.fn())
 
     try {
-      fetch('/apples')
+      await fetch('/apples')
     } catch (error) {}
 
     expect(fetchSpy.mock.calls.length).toBe(1)
@@ -125,13 +125,13 @@ describe('fotch', () => {
     fotch.start('/api')
 
     try {
-      fetch('/apples')
+      await fetch('/apples')
     } catch (error) {}
 
     expect(fetchSpy.mock.calls.length).toBe(2)
 
     try {
-      fetch('/api/apples')
+      await fetch('/api/apples')
     } catch (error) {}
 
     expect(fetchSpy.mock.calls.length).toBe(2)
