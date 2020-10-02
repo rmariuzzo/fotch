@@ -118,7 +118,9 @@ describe('fotch', () => {
 
     try {
       await fetch('/apples')
-    } catch (error) {}
+    } catch (error) {
+      // Intetionally left blank
+    }
 
     expect(fetchSpy.mock.calls.length).toBe(1)
 
@@ -126,13 +128,17 @@ describe('fotch', () => {
 
     try {
       await fetch('/apples')
-    } catch (error) {}
+    } catch (error) {
+      // Intetionally left blank
+    }
 
     expect(fetchSpy.mock.calls.length).toBe(2)
 
     try {
       await fetch('/api/apples')
-    } catch (error) {}
+    } catch (error) {
+      // Intetionally left blank
+    }
 
     expect(fetchSpy.mock.calls.length).toBe(2)
   })

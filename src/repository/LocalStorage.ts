@@ -18,7 +18,7 @@ function write(key: string, store: Store): void {
   localStorage.setItem(`__fotch_${key}`, JSON.stringify(store))
 }
 
-export default class LocalStorage implements Repository<Object> {
+export default class LocalStorage implements Repository<any> {
   constructor() {
     if (!self.localStorage) {
       throw new Error('localStorage must exist')
