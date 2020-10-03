@@ -29,15 +29,15 @@ export function createResponse(
 
 export function createResolver(opts?: {
   delay?: number | { min: number; max: number }
-}): Function {
-  return function(value: any): Promise<any> {
+}): (value: any) => Promise<any> {
+  return function (value: any): Promise<any> {
     if (opts && opts.delay) {
       const responseDelay =
         typeof opts.delay === 'number'
           ? opts.delay
           : getRandomNumber(opts.delay.min, opts.delay.max)
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           resolve(value)
         }, responseDelay)
