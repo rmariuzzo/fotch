@@ -1,16 +1,21 @@
 import LocalStorage from '../repository/LocalStorage'
-import { createResponse } from '../utils'
+import { createResolver, createResponse } from '../utils'
 
 const repository = new LocalStorage()
 let _fetch = null
 let intercepting = false
 
+type FotchOptions = {
+  start?: string
+  delay?: number | { min: number; max: number }
+}
+
 export default {
-  start(match?: string) {
+  start(opts?: string | FotchOptions) {
     if (!intercepting) {
       _fetch = window.fetch
       intercepting = true
-      window.fetch = fotch(match)
+      window.fetch = fotch(opts)
     }
   },
 
@@ -22,15 +27,19 @@ export default {
   }
 }
 
-const fotch = (match?: string) => {
+const fotch = (opts?: string | FotchOptions) => {
   return (input: RequestInfo, init?: RequestInit): Promise<Response> => {
     if (!input) {
       return _fetch(input)
     }
 
+    const match = typeof opts === 'object' ? opts.start : opts
+
     if (typeof match === 'string' && !input.toString().includes(match)) {
       return _fetch(input, init)
     }
+
+    const resolver = createResolver(typeof opts === 'object' ? opts : undefined)
 
     const segments = input
       .toString()
@@ -57,23 +66,23 @@ const fotch = (match?: string) => {
             data = repository.get(name, id)
           }
 
-          return Promise.resolve(createResponse(data, 200, input.toString()))
+          return resolver(createResponse(data, 200, input.toString()))
 
         case 'post':
           data = repository.create(name, JSON.parse(init.body.toString()))
 
-          return Promise.resolve(createResponse(data, 201, input.toString()))
+          return resolver(createResponse(data, 201, input.toString()))
 
         case 'put':
         case 'patch':
           data = repository.update(name, id, JSON.parse(init.body.toString()))
 
-          return Promise.resolve(createResponse(data, 200, input.toString()))
+          return resolver(createResponse(data, 200, input.toString()))
 
         case 'delete':
           repository.remove(name, id)
 
-          return Promise.resolve(createResponse(data, 200, input.toString()))
+          return resolver(createResponse(data, 200, input.toString()))
       }
     } catch (error) {
       return Promise.reject(

@@ -136,4 +136,27 @@ describe('fotch', () => {
 
     expect(fetchSpy.mock.calls.length).toBe(2)
   })
+
+  it('should wait for the response when delay props is passed', async () => {
+    jest.useFakeTimers()
+
+    const REQUEST_DELAY = 100
+
+    fotch.start({
+      delay: REQUEST_DELAY
+    })
+
+    const mockFuctionAfterResponse = jest.fn()
+    fetch('/apples/').then(mockFuctionAfterResponse) // will be called after REQUEST_DELAY (100ms)
+
+    jest.advanceTimersByTime(20)
+    // let any pending callbacks in PromiseJobs run. ref.
+    // https://stackoverflow.com/questions/52177631/jest-timer-and-promise-dont-work-well-settimeout-and-async-function/52196951#52196951
+    await Promise.resolve()
+    expect(mockFuctionAfterResponse).not.toHaveBeenCalled()
+
+    jest.advanceTimersByTime(80)
+    await Promise.resolve()
+    expect(mockFuctionAfterResponse).toHaveBeenCalled()
+  })
 })

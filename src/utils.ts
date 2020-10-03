@@ -26,3 +26,28 @@ export function createResponse(
     text: notImplemented
   }
 }
+
+export function createResolver(opts?: {
+  delay?: number | { min: number; max: number }
+}): Function {
+  return function(value: any): Promise<any> {
+    if (opts && opts.delay) {
+      const responseDelay =
+        typeof opts.delay === 'number'
+          ? opts.delay
+          : getRandomNumber(opts.delay.min, opts.delay.max)
+
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(value)
+        }, responseDelay)
+      })
+    }
+
+    return Promise.resolve(value)
+  }
+}
+
+function getRandomNumber(min: number, max: number) {
+  return Math.random() * (max - min) + min
+}
