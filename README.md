@@ -3,18 +3,11 @@
 
 #### Motivation
 
-<small>
-When I code for fun, I need to have backend REST API to play with. Usually, I feel too lazy to create a dumb REST API. I have dream about a simple library that I could plug in the frontend with little effort and simulate and persist data somewhere. Then <code>fotch</code> was born.
-</small>
+When I code for fun, I occasionally need a backend REST API to play with. Usually, I feel too lazy to create a dumb REST API. I have dream about a simple library that I could plug in the frontend with little effort and simulate and persist data somewhere. Then **`fotch`** was born.
 
 #### How it works?
 
-<small>
-<code>fotch</code> monkey patch <code>window.api</code> and intercept all calls. When a matching call looks like a REST operation then <code>fotch</code> responde as you would expect. All data is stored in <code>window.localStorage</code>.
-</small>
-
-<br>
-<br>
+**`fotch`** monkey patches the `window.fetch` API and intercept all calls. When a matching call looks like a REST operation then **`fotch`** responds as you would expect from a REST API. All data is stored in `window.localStorage`.
 
 # Installation
 
@@ -26,7 +19,7 @@ npm i fotch
 
 # Usage
 
-```js
+```ts
 import fotch from 'fotch'
 
 fotch.start()
@@ -70,21 +63,22 @@ If you need more options then **[request it creating an issue](/issues/new)**.
 
 <br>
 
-# Development
+## Development
 
-1.  Clone this repo.
-2.  Install dependencies: `npm i`
-3.  Create a PR.
+1.  Clone this repository.
+2.  Install dependencies: `npm i`.
+3.  Make changes and create a PR.
 
-## Test
+### Tests
 
-```bash
-npm test
+```sh
+npm run test
 ```
 
-## Releases
+### Releases
 
-```
-npm run release
-npm run release:beta
-```
+Releases are triggered by `npm version` and handled by [GitHub Actions](https://github.com/rmariuzzo/fotch/actions?query=workflow%3Apublish).
+
+<center><br><br><br>
+Made with ♥ by <a href="https://github.com/rmariuzzo" target="_blank">@rmariuzzo</a>
+</center>

@@ -11,14 +11,14 @@ type Store = {
 
 function read(key: string): Store | null {
   const source = localStorage.getItem(`__fotch_${key}`)
-  return JSON.parse(source)
+  return source ? JSON.parse(source) : null
 }
 
 function write(key: string, store: Store): void {
   localStorage.setItem(`__fotch_${key}`, JSON.stringify(store))
 }
 
-export default class LocalStorage implements Repository<Object> {
+export default class LocalStorage implements Repository<any> {
   constructor() {
     if (!self.localStorage) {
       throw new Error('localStorage must exist')
@@ -37,7 +37,7 @@ export default class LocalStorage implements Repository<Object> {
       throw new NotFoundError(`${name} with id ${id} not found`)
     }
 
-    const record = collection.data.find(datum => datum.id === id)
+    const record = collection.data.find((datum) => datum.id === id)
 
     if (!record) {
       throw new NotFoundError(`${name} with id ${id} not found`)
@@ -64,7 +64,7 @@ export default class LocalStorage implements Repository<Object> {
       throw new NotFoundError(`${name} with id ${id} not found`)
     }
 
-    const item = store.data.find(datum => datum.id === id)
+    const item = store.data.find((datum) => datum.id === id)
 
     if (item === undefined) {
       throw new NotFoundError(`${name} with id ${id} not found`)
@@ -84,7 +84,7 @@ export default class LocalStorage implements Repository<Object> {
       throw new NotFoundError(`${name} with id ${id} not found`)
     }
 
-    const item = store.data.find(datum => datum.id === id)
+    const item = store.data.find((datum) => datum.id === id)
 
     if (item === undefined) {
       throw new NotFoundError(`${name} with id ${id} not found`)

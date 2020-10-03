@@ -2,7 +2,7 @@ import LocalStorage from '../repository/LocalStorage'
 import { createResolver, createResponse } from '../utils'
 
 const repository = new LocalStorage()
-let _fetch = null
+let _fetch = window.fetch
 let intercepting = false
 
 type FotchOptions = {
@@ -24,7 +24,7 @@ export default {
       intercepting = false
       window.fetch = _fetch
     }
-  }
+  },
 }
 
 const fotch = (opts?: string | FotchOptions) => {
@@ -60,29 +60,47 @@ const fotch = (opts?: string | FotchOptions) => {
     try {
       switch (method) {
         case 'get':
-          if (id === null) {
-            data = repository.all(name)
-          } else {
+          if (id) {
             data = repository.get(name, id)
+          } else {
+            data = repository.all(name)
           }
 
           return resolver(createResponse(data, 200, input.toString()))
 
         case 'post':
-          data = repository.create(name, JSON.parse(init.body.toString()))
+          data = repository.create(
+            name,
+            JSON.parse(init?.body?.toString() ?? '{}')
+          )
 
           return resolver(createResponse(data, 201, input.toString()))
 
         case 'put':
         case 'patch':
-          data = repository.update(name, id, JSON.parse(init.body.toString()))
+          if (!id) {
+            throw new Error(`Missing id: ${id}`)
+          }
+
+          data = repository.update(
+            name,
+            id,
+            JSON.parse(init?.body?.toString() ?? '{}')
+          )
 
           return resolver(createResponse(data, 200, input.toString()))
 
         case 'delete':
+          if (!id) {
+            throw new Error(`Missing id: ${id}`)
+          }
+
           repository.remove(name, id)
 
+
           return resolver(createResponse(data, 200, input.toString()))
+        default:
+          throw new Error(`Unexpected method: ${method}`)
       }
     } catch (error) {
       return Promise.reject(
