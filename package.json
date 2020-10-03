@@ -1,6 +1,6 @@
 {
   "name": "fotch",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Fotch – In browser fake REST API for creative development purposes!",
   "keywords": [
     "fetch",
