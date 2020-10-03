@@ -1,11 +1,11 @@
 [![Fotch – In browser fake REST API for creative development purposes!
-](.github/banner.svg)](#installation)
+](.github/assets/banner.svg)](#installation)
 
-#### Motivation
+## Motivation
 
 When I code for fun, I occasionally need a backend REST API to play with. Usually, I feel too lazy to create a dumb REST API. I have dream about a simple library that I could plug in the frontend with little effort and simulate and persist data somewhere. Then **`fotch`** was born.
 
-#### How it works?
+## How it works?
 
 **`fotch`** monkey patches the `window.fetch` API and intercept all calls. When a matching call looks like a REST operation then **`fotch`** responds as you would expect from a REST API. All data is stored in `window.localStorage`.
 
@@ -14,8 +14,6 @@ When I code for fun, I occasionally need a backend REST API to play with. Usuall
 ```bash
 npm i fotch
 ```
-
-<br>
 
 # Usage
 
@@ -50,35 +48,46 @@ fetch('/apples/1', { method: 'put', data: JSON.stringify({ color: 'green' }) })
 fetch('/apples/1', { method: 'delete' })
 ```
 
-## Options
+# Documentation
 
-There's only one option that will allow to filter certain calls:
+The first parameter can be a `string` or a [configuration object](#configuration-object).
+
+When the first parameter is a string it will be interpreted as match pattern.
 
 ```js
-// Filter any call where its URL contains “/api/”.
 fotch.start('/api/')
 ```
 
+This will filter any `fetch` calls where the URL contains `/api/`.
+
+## Configuration object
+
+When the first parameter is a configuration object the following options can be used:
+
+| Name                              | Type           | Description                                                                                                                   |
+| --------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `match`                           | `string`       | The portion to match in a URL to filter `fetch` calls.                                                                        |
+| `delay`                           | `number`       | Specify a delay to all calls in milliseconds .                                                                                |
+| <!-- Intentionally left blank --> | `{ min, max }` | Specify a minimum and a maximum delay to all calls in milliseconds. **`fotch`** will return a random delay within that range. |
+
 If you need more options then **[request it creating an issue](/issues/new)**.
 
-<br>
-
-## Development
+# Development
 
 1.  Clone this repository.
 2.  Install dependencies: `npm i`.
 3.  Make changes and create a PR.
 
-### Tests
+## Tests
 
 ```sh
 npm run test
 ```
 
-### Releases
+## Releases
 
 Releases are triggered by `npm version` and handled by [GitHub Actions](https://github.com/rmariuzzo/fotch/actions?query=workflow%3Apublish).
 
-<center><br><br><br>
-Made with ♥ by <a href="https://github.com/rmariuzzo" target="_blank">@rmariuzzo</a>
-</center>
+---
+
+Made with ♥ by [@rmariuzzo](https://github.com/rmariuzzo) and [contributors](https://github.com/rmariuzzo/fotch/graphs/contributors).
